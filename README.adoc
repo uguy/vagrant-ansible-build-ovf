@@ -2,10 +2,13 @@
 Hugues BRETIN <http://github.com/uguy>
 :experimental:
 :toc: 
+:toc-placement!:
 
 This is a simple sample on how to generate/build OVF file from a https://www.vagrantup.com/[Vagrant] box tuned with http://www.ansible.com/home[Ansible]
 
 NOTE: you need a linux box (or an Ansible/bash capable one) to run it
+
+toc::[]
 
 == Forge your own cloud images
 
