@@ -1,0 +1,40 @@
+- hosts: all
+  sudo: true  
+  tasks:
+  
+    # 1 - Required cloud packages as listed here http://docs.openstack.org/image-guide/content/ch_openstack_images.html  
+    - name: Install cloud packages
+      apt: name="cloud-init" state=latest update-cache=yes
+      with_items:
+        - cloud-init
+        - cloud-utils
+        - cloud-initramfs-growroot
+        - openssh-server
+
+    - name: Remove hard-coded MAC address information
+      shell: 'echo "" > /lib/udev/rules.d/75-persistent-net-generator.rules'
+    
+    - name: Disable firewall
+      shell: ufw disable
+
+    # See cloud-init documentation for more info
+    # - name: Customize your cloud-init user
+    #   shell: echo "user: ubuntu" > /etc/cloud/cloud.cfg
+    # ...
+
+    - name:  Ensure image writes boot log to console
+      lineinfile: line='GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0"' dest=/etc/default/grub
+      notify: update grub
+
+    # 2 - Customize the instance (install your own service etc.
+    - name: Install cowsay
+      apt: name="{{ item }}" state=latest update_cache=yes
+      with_items:
+        - cowsay
+        - fortune
+    - name: Use cowsay to display fortune when user ubuntu logs in
+      lineinfile: line="fortune | cowsay -f sheep" dest="/home/ubuntu/.bashrc" owner="ubuntu" group="ubuntu"
+
+  handlers:
+    - name: update grub
+      shell: update-grub
