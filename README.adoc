@@ -1,8 +1,14 @@
 = vagrant-ansible-build-ovf
+Hugues BRETIN <http://github.com/uguy>
+:experimental:
+:toc: 
 
 This is a simple sample on how to generate/build OVF file from a https://www.vagrantup.com/[Vagrant] box tuned with http://www.ansible.com/home[Ansible]
 
+NOTE: you need a linux box (or an Ansible/bash capable one) to run it
+
 == Forge your own cloud images
+
 When you cant go for docker based deployment, you might want to forge deployable images in order to push them to your favourite cloud provider's catalog (ie. using glance for https://www.openstack.org/[OpenStack] ones)
 
 Forging a deployable image means creating an environment from a base distro and customize it to suit your needs (install custom services/config/...)
@@ -13,8 +19,6 @@ Now *Ansible* is also an "extremly pleasant" tool for box configuation (in fact 
 Since some cloud provider impose some packages to be present to accept custom images as valid ones, we can easily use ansible for that !
 
 This sample shows how to build an OpenStack compliant custom http://en.wikipedia.org/wiki/Open_Virtualization_Format[OVF] files from Ubuntu/trusty64 with custom packages on it (cowsay,fortune) and configuration
-
-NOTE: you need a linux box (or an Ansible capable one) to run this
 
 == Setup environment
 
@@ -49,7 +53,45 @@ $ glance image-create --progress --name "funny-ubuntu-trusty-1.0.0" --is-public=
 
 The build script destroy the vagrant box if it exist and recreate it.
 
+.source: build-image.sh
 [source,bash,subs="verbatim,attributes"]
 ----
-include::https://raw.githubusercontent.com/uguy/vagrant-ansible-build-ovf/master/build-image.sh[lines=12]
+vagrant destroy -f && vagrant up
 ----
+
+The box defined is an official Ubuntu Trusty64 fetched by Vagrant from https://vagrantcloud.com/ubuntu/boxes/trusty64[Vagrantcloud]
+The name of the virtual machine is fixed to be able to retrieve it from the script
+
+.source: Vagrantfile
+[source,ruby,subs="verbatim,attributes"]
+----
+  config.vm.box = "ubuntu/trusty64"
+  
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false   
+    # name is important since used to target the vm from VBoxManage tool
+    vb.name = "funny-ubuntu-trusty-1.0.0"
+  end
+----
+
+We specify ansible as our provider for the vm customization. Vagrant will run ansible/playbook.yml against the vm once started. + 
+Ansible rocks and is really worth having a look ! 
+
+.source: Vagrantfile
+[source,ruby,subs="verbatim,attributes"]
+----
+  config.vm.provision "ansible" do |ansible|  
+    ansible.playbook = "ansible/playbook.yml"
+    ansible.verbose = "v"
+  end
+----
+
+The last consist in exporting the vm as an OVF file. First it needs to be stopped ( vagrant halt) and then a simple call to VBoxManage will do.
+
+.source: build-image.sh
+[source,bash,subs="verbatim,attributes"]
+----
+$ VBoxManage export $VM_NAME -o $SCRIPTPATH/dist/$VM_NAME.ovf --ovf20 --manifest
+----
+
+That's all folks !
