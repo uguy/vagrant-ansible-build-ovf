@@ -44,3 +44,12 @@ You can use your cloud provider client to upload it and make it available for in
 ----
 $ glance image-create --progress --name "funny-ubuntu-trusty-1.0.0" --is-public=false --container-format=ovf --disk-format=vmdk --file dist/funny-ubuntu-trusty-1.0.0.ovf
 ----
+
+== How this works
+
+The build script destroy the vagrant box if it exist and recreate it.
+
+[source,bash,subs="verbatim,attributes"]
+----
+include::build-image.sh[lines=12]
+----

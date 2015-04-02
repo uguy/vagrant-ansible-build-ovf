@@ -19,9 +19,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.verbose = "v"
   end
 
-#  if Vagrant.has_plugin?("vagrant-proxyconf")
-#        config.proxy.http     = "http://proxy:8080/"
-#        config.proxy.https    = "http://proxy:8080/"
-#        config.proxy.no_proxy = "localhost,127.0.0.1,.rd.francetelecom.fr"
-#   end
 end
