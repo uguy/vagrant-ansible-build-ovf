@@ -51,5 +51,5 @@ The build script destroy the vagrant box if it exist and recreate it.
 
 [source,bash,subs="verbatim,attributes"]
 ----
-include::build-image.sh[lines=12]
+include::https://raw.githubusercontent.com/uguy/vagrant-ansible-build-ovf/master/build-image.sh[lines=12]
 ----
