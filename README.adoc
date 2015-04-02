@@ -4,7 +4,7 @@ Hugues BRETIN <http://github.com/uguy>
 :toc: 
 :toc-placement!:
 
-This is a simple sample on how to generate/build OVF file from a https://www.vagrantup.com/[Vagrant] box tuned with http://www.ansible.com/home[Ansible]
+This is a simple sample on how to get started generating OVF file from a https://www.vagrantup.com/[Vagrant] box tuned with http://www.ansible.com/home[Ansible].
 
 NOTE: you need a linux box (or an Ansible/bash capable one) to run it
 
@@ -12,7 +12,7 @@ toc::[]
 
 == Forge your own cloud images
 
-When you cant go for docker based deployment, you might want to forge deployable images in order to push them to your favourite cloud provider's catalog (ie. using glance for https://www.openstack.org/[OpenStack] ones)
+When you cant go for https://www.docker.com/[Docker] based deployment, you might want to forge deployable images in order to push them to your favourite cloud provider's catalog (ie. using glance for https://www.openstack.org/[OpenStack] ones). When you need elasticity, deploying a prepackage vm is surely faster than reconfiguring a new one from scratch !
 
 Forging a deployable image means creating an environment from a base distro and customize it to suit your needs (install custom services/config/...)
 
@@ -45,7 +45,9 @@ $ ./build-image.sh
 
 The produced OVF file should be in the relative dist folder :)
 
-You can use your cloud provider client to upload it and make it available for instanciation.
+You can use your cloud provider client to upload it and make it available for instanciation. + 
+
+_But before this, make sure your box has been *secured* via ansible (users,keys,packages,...) Vagrant user should be removed and probably a lot of other things needs to be done, just improve the playbook to do so ;)_
 
 [source,bash,subs="verbatim,attributes"]
 ----
