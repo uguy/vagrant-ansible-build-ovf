@@ -3,15 +3,14 @@
 This is a simple sample on how to generate/build OVF file from a https://www.vagrantup.com/[Vagrant] box tuned with http://www.ansible.com/home[Ansible]
 
 == Forge your own cloud images
-When you cant go for docker based deployment, you might want to forge deployable images that you push to your favourite cloud provider's catalog (ie. using glance for https://www.openstack.org/[OpenStack] ones)
+When you cant go for docker based deployment, you might want to forge deployable images in order to push them to your favourite cloud provider's catalog (ie. using glance for https://www.openstack.org/[OpenStack] ones)
 
-Forging a deployable image means creating an environment from a base distro and customize it to suit our needs (install custom services/config/...)
+Forging a deployable image means creating an environment from a base distro and customize it to suit your needs (install custom services/config/...)
 
 *Vagrant* is a great and well known tool for managing local virtual machines with virtual box (but not only), so it is seems to be a natural choice to setup the base distro.
 
 Now *Ansible* is also an "extremly pleasant" tool for box configuation (in fact your all infrastructure if you wish).
-Since some cloud provider impose some packages to be present to accept custom images as valid ones. +
-We can easily use ansible for that !
+Since some cloud provider impose some packages to be present to accept custom images as valid ones, we can easily use ansible for that !
 
 This sample shows how to build an OpenStack compliant custom http://en.wikipedia.org/wiki/Open_Virtualization_Format[OVF] files from Ubuntu/trusty64 with custom packages on it (cowsay,fortune) and configuration
 
@@ -37,7 +36,8 @@ $ sudo pip install ansible
 $ ./build-image.sh
 ----
 
-The OVF file should be in the relative dist folder. 
+The produced OVF file should be in the relative dist folder :)
+
 You can use your cloud provider client to upload it and make it available for instanciation.
 
 [source,bash,subs="verbatim,attributes"]
